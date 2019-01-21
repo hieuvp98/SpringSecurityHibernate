@@ -54,22 +54,24 @@ public class SocialLoginController {
     }
 
     @RequestMapping("/google")
-    public String google(Model model, @RequestParam("code") String code, HttpServletRequest request) {
+    public String google(@RequestParam("code") String code, HttpServletRequest request) {
         googleService.createGoogleAccessToken(code);
         GooglePojo googlePojo = googleService.getGooglePojo();
         UserDetails user = googleUtils.buildUser(googlePojo);
+        return getAuthorization(request, user);
+    }
+
+    private String getAuthorization(HttpServletRequest request, UserDetails user) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
         usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         return "redirect:/userInfo";
     }
+
     @RequestMapping("/facebook")
-    public String facebook(Model model,@RequestParam("code") String code, HttpServletRequest httpServletRequest){
+    public String facebook(@RequestParam("code") String code, HttpServletRequest httpServletRequest) {
         facebookService.createFacebookAccessToken(code);
         UserDetails userDetails = facebookUtils.buildUser(facebookService.getUser());
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-        usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-        return "redirect:/userInfo";
+        return getAuthorization(httpServletRequest, userDetails);
     }
 }
