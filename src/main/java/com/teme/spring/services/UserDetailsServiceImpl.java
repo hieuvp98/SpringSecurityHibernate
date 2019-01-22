@@ -18,10 +18,14 @@ import java.util.List;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
+    private final AppUserDAO appUserDAO;
+    private final AppRoleDAO appRoleDAO;
+
     @Autowired
-    private AppUserDAO appUserDAO;
-    @Autowired
-    private AppRoleDAO appRoleDAO;
+    public UserDetailsServiceImpl(AppUserDAO appUserDAO, AppRoleDAO appRoleDAO) {
+        this.appUserDAO = appUserDAO;
+        this.appRoleDAO = appRoleDAO;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
@@ -46,6 +50,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         return (UserDetails) new User(appUser.getUserName(), //
-                appUser.getEncrytedPassword(), grantList);
+                appUser.getEncryptedPassword(), grantList);
     }
 }

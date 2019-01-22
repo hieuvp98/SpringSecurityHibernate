@@ -1,9 +1,13 @@
 package com.teme.spring.controller;
 
+import com.teme.spring.validator.AppUserValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -12,6 +16,24 @@ import com.teme.spring.utils.WebUtils;
 
 @Controller
 public class MainController {
+    private final AppUserValidator validator;
+
+    @Autowired
+    public MainController(AppUserValidator validator) {
+        this.validator = validator;
+    }
+
+    @InitBinder
+    protected void initBinder(WebDataBinder webDataBinder) {
+        Object target = webDataBinder.getTarget();
+        if (target == null) {
+            return;
+        }
+        if (target.getClass() == validator.getClass()) {
+            webDataBinder.setValidator(validator);
+        }
+    }
+
     @RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
     public String welcomePage(Model model) {
         model.addAttribute("title", "Welcome");
