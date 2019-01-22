@@ -8,14 +8,16 @@ public class AppUserForm {
     private boolean enabled;
     private String password;
     private String confirmPassword;
+    private int phoneNumber;
 
-    public AppUserForm(String userName, String firstName, String lastName, boolean enabled, String password, String confirmPassword) {
+    public AppUserForm(String userName, String firstName, String lastName, boolean enabled, String password, String confirmPassword, int phoneNumber) {
         UserName = userName;
         FirstName = firstName;
         this.lastName = lastName;
         this.enabled = enabled;
         this.password = password;
         this.confirmPassword = confirmPassword;
+        this.phoneNumber = phoneNumber;
     }
 
     public AppUserForm() {
@@ -68,5 +70,13 @@ public class AppUserForm {
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+    }
+
+    public int getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(int phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }
