@@ -1,7 +1,9 @@
 package com.teme.spring.DAO;
 
 import com.teme.spring.entities.AppUser;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,5 +36,9 @@ public class AppUserDAO {
         } catch (NoResultException e) {
             return null;
         }
+    }
+
+    public void saveAppUser(AppUser appUser) {
+
     }
 }
